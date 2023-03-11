@@ -1,0 +1,98 @@
+<div class="row">
+  <div class="col-6">
+    <div *ngIf="showDiv">
+      <form>
+        <div [formGroup]="form">
+          <ng-container formArrayName="sepet">
+            <ng-container *ngFor="let form of sepet.controls; let i = index">
+
+          <h3 class="mt-2">{{ i+1 }}.Eşya</h3>
+              <div
+                style="font-weight: bolder"
+                class="form-container mt-3"
+                [formGroupName]="i"
+              >
+
+                <mat-form-field>
+                  <input
+                    formControlName="isim"
+                    matInput
+                    placeholder="Eşya ismi"
+                  />
+                  <mat-error *ngIf="getControls.sepet.invalid">
+                    {{
+                      validationService.getValidationMessage(
+                        getControls.sepet,
+                        "İsmi",i,"isim"
+                      )
+                    }}
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input
+                    type="number"
+                    formControlName="adet"
+                    matInput
+                    placeholder="Adedi"
+                  />
+                  <mat-error *ngIf="getControls.sepet.invalid">
+                    {{
+                      validationService.getValidationMessage(
+                        getControls.sepet,
+                        "Adedi",i,"adet"
+                      )
+                    }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+        <button class="mt-2" (click)="addToStorage()" mat-raised-button color="warn">
+          Kaydet
+        </button>
+      </form>
+    </div>
+
+    <div class="mt-5">
+
+      <button class="me-2" (click)="addItem()" mat-raised-button color="primary">
+        Ürün Ekle
+      </button>
+
+
+
+      <button class="" (click)="clear()" mat-raised-button color="accent">
+        Temizle
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="col-6">
+    <table *ngIf="list" mat-table [dataSource]="list" class="mat-elevation-z8 mt-5">
+      <!-- Position Column -->
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef> No. </th>
+        <td mat-cell *matCellDef="let element"> {{element.pozisyon}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> İsim </th>
+        <td mat-cell *matCellDef="let element"> {{element.isim}} </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="count">
+        <th mat-header-cell *matHeaderCellDef> Adet </th>
+        <td mat-cell *matCellDef="let element"> {{element.adet}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>

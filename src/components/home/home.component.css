@@ -1,0 +1,58 @@
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+html, body { height: 100%; }
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+.form-container > div {
+  width: 100% !important;
+}
+.form-container button {
+  width: fit-content;
+}
+
+.blue
+{
+  color: blue;
+}
+
+.purple
+{
+  color:purple;
+}
+
+.magenta{
+  color:magenta
+}
+
+.demo-table {
+  width: 100%;
+}
+
+.mat-column-demo-position {
+  width: 32px;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  text-align: center;
+}
+
+.mat-column-demo-name {
+  padding-left: 16px;
+  font-size: 20px;
+}
+
+.mat-column-demo-weight {
+  font-style: italic;
+}
+
+.mat-column-demo-symbol {
+  width: 32px;
+  text-align: center;
+  font-weight: bold;
+}
+
+table {
+  width: 100%;
+}

@@ -1,3 +1,4 @@
+import { Item } from './../../interfaces/item';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ValidationService } from 'src/app/services/validation.service';
@@ -8,11 +9,13 @@ import { ValidationService } from 'src/app/services/validation.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+
   formCounter = 0
   showDiv = false
   dummyArray = Array(0).fill(0);
-  list:object[]=[]
-  displayedColumns: string[] = ['position', 'name', 'count']
+  listArray: Item[] = []
+  list: Item[] = []
+  displayedColumns: string[] = ['id', 'name', 'count', "delete"]
   constructor(private fb: FormBuilder, public validationService: ValidationService) {
 
   }
@@ -51,19 +54,54 @@ export class HomeComponent implements OnInit {
   }
 
 
+  deleteAll = () => {
+    this.list = []
+    this.listArray = [...this.list]
+    localStorage.clear()
+  }
 
-  addToStorage = () => {
+  delete = (id: any) => {
+    let newList: Item[] = []
     let urunler = []
     let adetler = []
+    newList = this.listArray.filter(x => x.id !== id)
+    this.list = []
+    for (let index = 0; index < newList.length; index++) {
+      this.list.push({ id: index + 1, isim: newList[index].isim, adet: newList[index].adet })
+      urunler[index] = newList[index].isim
+      adetler[index] = newList[index].adet
+    }
+    if (urunler.length>0) {
+      localStorage.setItem('Ürünler', urunler!.join())
+      localStorage.setItem('Adetler', adetler!.join())
+    }
+    else { localStorage.clear() }
+    this.listArray = [...this.list]
+  }
+
+
+  addToStorage = () => {
+
+    let urunler = localStorage.getItem("Ürünler")?.split(",")
+    let adetler = localStorage.getItem("Adetler")?.split(",")
+    let length = urunler?.length
+    if (length === undefined) {
+      length = 0
+      urunler = []
+      adetler = []
+    }
+    if(urunler&&urunler[0]===""){
+      urunler=[]
+      adetler=[]
+    }
     if (this.getControls.sepet.valid) {
       for (let index = 0; index < this.sepet.length; index++) {
 
-        urunler[index] = this.sepet.controls[index].value.isim
-        adetler[index] = this.sepet.controls[index].value.adet
+        urunler![index + length!] = this.sepet.controls[index].value.isim
+        adetler![index + length!] = this.sepet.controls[index].value.adet
       }
-      localStorage.setItem('Ürünler', urunler.join())
-      localStorage.setItem('Adetler', adetler.join())
-
+      localStorage.setItem('Ürünler', urunler!.join())
+      localStorage.setItem('Adetler', adetler!.join())
       this.clear()
       this.listItems()
     }
@@ -78,14 +116,21 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  listItems=()=>{
-    let urunler=localStorage.getItem("Ürünler")?.split(",")
-    let adetler=localStorage.getItem("Adetler")?.split(",")
-    if(urunler&&adetler){
-      for (let index = 0; index < urunler.length; index++) {
-        this.list.push({pozisyon:index+1,isim:urunler[index],adet:adetler[index]})
+  listItems = () => {
+    let urunler = localStorage.getItem("Ürünler")?.split(",")
+    let adetler = localStorage.getItem("Adetler")?.split(",")
+    if (urunler && adetler) {
+      if (urunler[0] !== "" && adetler[0] !== "") {
+        this.list = []
+        for (let index = 0; index < urunler.length; index++) {
+
+
+          { this.list.push({ id: index + 1, isim: urunler[index], adet: adetler[index] }) }
+        }
+      }
     }
+    this.listArray = [...this.list]
   }
-  }
+
 
 }

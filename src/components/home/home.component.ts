@@ -1,4 +1,4 @@
-import { Item } from './../../interfaces/item';
+import { Item } from '../../interfaces/item';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ValidationService } from 'src/app/services/validation.service';
@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
 
 
     const sepetForm = this.fb.group({
-      adet: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+      adet: ['1', [Validators.required, Validators.pattern("^[0-9]*$")]],
       isim: ['', Validators.required]
     });
     this.sepet.push(sepetForm);
@@ -61,7 +61,7 @@ export class HomeComponent implements OnInit {
   }
 
   delete = (id: any) => {
-    let newList: Item[] = []
+    let newList: Item[]
     let urunler = []
     let adetler = []
     newList = this.listArray.filter(x => x.id !== id)

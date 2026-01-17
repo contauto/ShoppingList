@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-about',
+  standalone: true,
+  imports: [CommonModule, TranslateModule],
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.css']
 })
-export class AboutComponent implements OnInit {
-  year:number=Number((new Date()).getFullYear())
-  constructor() { }
+export class AboutComponent {
+  year = new Date().getFullYear();
 
-  ngOnInit() {
+  get age(): number {
+    return this.year - 1999;
   }
-
 }

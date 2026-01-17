@@ -1,0 +1,55 @@
+{
+    "app": {
+        "title": "Alışveriş Listesi",
+        "brand": "Alışveriş Listesi"
+    },
+    "nav": {
+        "home": "Ana Sayfa",
+        "about": "Hakkımda"
+    },
+    "home": {
+        "title": "Alışveriş Listem",
+        "subtitle": "Ürünlerinizi kolayca yönetin",
+        "addItem": "Yeni Ürün Ekle",
+        "itemNumber": "{{number}}. Ürün",
+        "itemName": "Ürün Adı",
+        "itemNamePlaceholder": "Ürün ismini girin...",
+        "quantity": "Adet",
+        "quantityPlaceholder": "Kaç adet?",
+        "save": "Kaydet",
+        "cancel": "İptal",
+        "deleteAll": "Tümünü Sil",
+        "delete": "Sil",
+        "emptyList": "Listeniz boş",
+        "emptyListDesc": "Yeni ürün ekleyerek başlayın",
+        "table": {
+            "no": "No",
+            "name": "Ürün Adı",
+            "quantity": "Adet",
+            "actions": "İşlemler"
+        }
+    },
+    "validation": {
+        "required": "{{field}} alanı zorunludur",
+        "pattern": "Sadece sayı girilebilir"
+    },
+    "about": {
+        "title": "Hakkımda",
+        "role": "Yazılım Geliştirici",
+        "intro": "Ben Kağan Berke Maktav,",
+        "description": "Kendimi back-end ve front-end mimaride geliştiriyorum.",
+        "nationality": "Uyruk",
+        "nationalityValue": "Türk",
+        "location": "Konum",
+        "locationValue": "Beyoğlu, İstanbul",
+        "email": "E-posta",
+        "age": "Yaş"
+    },
+    "footer": {
+        "madeBy": "tarafından ❤️ ile yapıldı"
+    },
+    "theme": {
+        "light": "Açık Tema",
+        "dark": "Koyu Tema"
+    }
+}

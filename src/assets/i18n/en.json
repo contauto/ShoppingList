@@ -1,0 +1,55 @@
+{
+    "app": {
+        "title": "Shopping List",
+        "brand": "Shopping List"
+    },
+    "nav": {
+        "home": "Home",
+        "about": "About Me"
+    },
+    "home": {
+        "title": "My Shopping List",
+        "subtitle": "Easily manage your items",
+        "addItem": "Add New Item",
+        "itemNumber": "Item #{{number}}",
+        "itemName": "Item Name",
+        "itemNamePlaceholder": "Enter item name...",
+        "quantity": "Quantity",
+        "quantityPlaceholder": "How many?",
+        "save": "Save",
+        "cancel": "Cancel",
+        "deleteAll": "Delete All",
+        "delete": "Delete",
+        "emptyList": "Your list is empty",
+        "emptyListDesc": "Start by adding a new item",
+        "table": {
+            "no": "No",
+            "name": "Item Name",
+            "quantity": "Qty",
+            "actions": "Actions"
+        }
+    },
+    "validation": {
+        "required": "{{field}} is required",
+        "pattern": "Only numbers allowed"
+    },
+    "about": {
+        "title": "About Me",
+        "role": "Software Developer",
+        "intro": "I'm Kağan Berke Maktav,",
+        "description": "I develop myself in back-end and front-end architecture.",
+        "nationality": "Nationality",
+        "nationalityValue": "Turkish",
+        "location": "Location",
+        "locationValue": "Beyoğlu, Istanbul",
+        "email": "Email",
+        "age": "Age"
+    },
+    "footer": {
+        "madeBy": "Made with ❤️ by"
+    },
+    "theme": {
+        "light": "Light Mode",
+        "dark": "Dark Mode"
+    }
+}

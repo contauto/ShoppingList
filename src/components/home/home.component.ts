@@ -1,136 +1,141 @@
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormArray, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
 import { Item } from '../../interfaces/item';
-import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, Validators } from '@angular/forms';
-import { ValidationService } from 'src/app/services/validation.service';
 
 @Component({
   selector: 'app-home',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatTableModule,
+    MatIconModule
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private translate = inject(TranslateService);
 
-  formCounter = 0
-  showDiv = false
-  dummyArray = Array(0).fill(0);
-  listArray: Item[] = []
-  list: Item[] = []
-  displayedColumns: string[] = ['id', 'name', 'count', "delete"]
-  constructor(private fb: FormBuilder, public validationService: ValidationService) {
-
-  }
+  formCounter = 0;
+  showForm = false;
+  listArray: Item[] = [];
+  displayedColumns: string[] = ['id', 'name', 'count', 'delete'];
 
   form = this.fb.group({
     sepet: this.fb.array([])
   });
 
-  addItem = () => {
-    this.formCounter++
-    this.dummyArray = Array(this.formCounter).fill(0);
-    this.showDiv = true
+  get sepet(): FormArray {
+    return this.form.controls['sepet'] as FormArray;
+  }
 
+  ngOnInit(): void {
+    this.loadItems();
+  }
 
-    const sepetForm = this.fb.group({
-      adet: ['1', [Validators.required, Validators.pattern("^[0-9]*$")]],
+  addItem(): void {
+    this.formCounter++;
+    this.showForm = true;
+
+    const itemForm = this.fb.group({
+      adet: ['1', [Validators.required, Validators.pattern('^[0-9]*$')]],
       isim: ['', Validators.required]
     });
-    this.sepet.push(sepetForm);
+    this.sepet.push(itemForm);
   }
 
-  ngOnInit() {
+  saveItems(): void {
+    if (this.form.controls.sepet.invalid) return;
 
-    this.listItems()
+    let urunler = localStorage.getItem('Ürünler')?.split(',') || [];
+    let adetler = localStorage.getItem('Adetler')?.split(',') || [];
 
-
-
-  }
-  get sepet() {
-    return this.form.controls["sepet"] as FormArray;
-  }
-
-  get getControls() {
-
-    return this.form.controls;
-  }
-
-
-  deleteAll = () => {
-    this.list = []
-    this.listArray = [...this.list]
-    localStorage.clear()
-  }
-
-  delete = (id: any) => {
-    let newList: Item[]
-    let urunler = []
-    let adetler = []
-    newList = this.listArray.filter(x => x.id !== id)
-    this.list = []
-    for (let index = 0; index < newList.length; index++) {
-      this.list.push({ id: index + 1, isim: newList[index].isim, adet: newList[index].adet })
-      urunler[index] = newList[index].isim
-      adetler[index] = newList[index].adet
+    // Clean empty arrays
+    if (urunler.length === 1 && urunler[0] === '') {
+      urunler = [];
+      adetler = [];
     }
-    if (urunler.length>0) {
-      localStorage.setItem('Ürünler', urunler!.join())
-      localStorage.setItem('Adetler', adetler!.join())
+
+    const length = urunler.length;
+
+    for (let i = 0; i < this.sepet.length; i++) {
+      urunler[i + length] = this.sepet.controls[i].value.isim;
+      adetler[i + length] = this.sepet.controls[i].value.adet;
     }
-    else { localStorage.clear() }
-    this.listArray = [...this.list]
+
+    localStorage.setItem('Ürünler', urunler.join());
+    localStorage.setItem('Adetler', adetler.join());
+
+    this.clearForm();
+    this.loadItems();
   }
 
-
-  addToStorage = () => {
-
-    let urunler = localStorage.getItem("Ürünler")?.split(",")
-    let adetler = localStorage.getItem("Adetler")?.split(",")
-    let length = urunler?.length
-    if (length === undefined) {
-      length = 0
-      urunler = []
-      adetler = []
-    }
-    if(urunler&&urunler[0]===""){
-      urunler=[]
-      adetler=[]
-    }
-    if (this.getControls.sepet.valid) {
-      for (let index = 0; index < this.sepet.length; index++) {
-
-        urunler![index + length!] = this.sepet.controls[index].value.isim
-        adetler![index + length!] = this.sepet.controls[index].value.adet
-      }
-      localStorage.setItem('Ürünler', urunler!.join())
-      localStorage.setItem('Adetler', adetler!.join())
-      this.clear()
-      this.listItems()
-    }
-  }
-
-  clear = () => {
-    this.formCounter = 0
-    this.showDiv = false
-    this.dummyArray = Array(0).fill(0);
+  clearForm(): void {
+    this.formCounter = 0;
+    this.showForm = false;
     while (this.sepet.length !== 0) {
-      this.sepet.removeAt(0)
+      this.sepet.removeAt(0);
     }
   }
 
-  listItems = () => {
-    let urunler = localStorage.getItem("Ürünler")?.split(",")
-    let adetler = localStorage.getItem("Adetler")?.split(",")
-    if (urunler && adetler) {
-      if (urunler[0] !== "" && adetler[0] !== "") {
-        this.list = []
-        for (let index = 0; index < urunler.length; index++) {
+  deleteItem(id: number): void {
+    const newList = this.listArray.filter(x => x.id !== id);
 
-
-          { this.list.push({ id: index + 1, isim: urunler[index], adet: adetler[index] }) }
-        }
-      }
+    if (newList.length > 0) {
+      const urunler = newList.map(item => item.isim);
+      const adetler = newList.map(item => item.adet);
+      localStorage.setItem('Ürünler', urunler.join());
+      localStorage.setItem('Adetler', adetler.join());
+    } else {
+      localStorage.removeItem('Ürünler');
+      localStorage.removeItem('Adetler');
     }
-    this.listArray = [...this.list]
+
+    this.loadItems();
   }
 
+  deleteAll(): void {
+    localStorage.removeItem('Ürünler');
+    localStorage.removeItem('Adetler');
+    this.listArray = [];
+  }
 
+  private loadItems(): void {
+    const urunler = localStorage.getItem('Ürünler')?.split(',');
+    const adetler = localStorage.getItem('Adetler')?.split(',');
+
+    if (urunler && adetler && urunler[0] !== '' && adetler[0] !== '') {
+      this.listArray = urunler.map((isim, index) => ({
+        id: index + 1,
+        isim,
+        adet: adetler[index]
+      }));
+    } else {
+      this.listArray = [];
+    }
+  }
+
+  getErrorMessage(index: number, field: string): string {
+    const control = this.sepet.controls[index].get(field);
+    if (control?.hasError('required')) {
+      return this.translate.instant('validation.required', { field: field === 'isim' ? 'İsim' : 'Adet' });
+    }
+    if (control?.hasError('pattern')) {
+      return this.translate.instant('validation.pattern');
+    }
+    return '';
+  }
 }

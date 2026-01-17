@@ -1,32 +1,61 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary nav-colorized">
-  <div class="container-fluid">
-    <div (click)="clickedNavBar()" style="cursor: pointer" class="navbar-brand">
-      Shopping List
+<nav class="navbar">
+  <div class="navbar-container">
+    <!-- Brand -->
+    <div class="navbar-brand" (click)="navigateHome()">
+      <span class="brand-icon">🛒</span>
+      <span class="brand-text">{{ 'app.brand' | translate }}</span>
     </div>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <div
-            (click)="clickedAboutMe()"
-            style="cursor: pointer"
-            class="nav-link active"
-            aria-current="page"
-          >
-            Hakkımda
+
+    <!-- Desktop Navigation -->
+    <div class="navbar-menu" [class.active]="isMenuOpen">
+      <div class="navbar-nav">
+        <a class="nav-link" (click)="navigateHome()">
+          <span class="nav-icon">🏠</span>
+          {{ 'nav.home' | translate }}
+        </a>
+        <a class="nav-link" (click)="navigateAbout()">
+          <span class="nav-icon">👤</span>
+          {{ 'nav.about' | translate }}
+        </a>
+      </div>
+
+      <!-- Right Actions -->
+      <div class="navbar-actions">
+        <!-- Language Selector -->
+        <div class="lang-dropdown">
+          <button class="lang-btn" (click)="toggleLangDropdown()">
+            <span class="lang-flag">{{ currentLang === 'tr' ? '🇹🇷' : '🇬🇧' }}</span>
+            <span class="lang-code">{{ currentLang.toUpperCase() }}</span>
+            <span class="dropdown-arrow">▼</span>
+          </button>
+          <div class="lang-menu" [class.show]="isLangDropdownOpen">
+            <button class="lang-option" [class.active]="currentLang === 'tr'" (click)="setLanguage('tr')">
+              <span>🇹🇷</span> Türkçe
+            </button>
+            <button class="lang-option" [class.active]="currentLang === 'en'" (click)="setLanguage('en')">
+              <span>🇬🇧</span> English
+            </button>
           </div>
-        </li>
-      </ul>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button class="theme-toggle" (click)="toggleTheme()"
+          [attr.aria-label]="themeService.isDark() ? 'Switch to light mode' : 'Switch to dark mode'">
+          <span class="theme-icon" [class.dark]="themeService.isDark()">
+            {{ themeService.isDark() ? '☀️' : '🌙' }}
+          </span>
+        </button>
+      </div>
     </div>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="navbar-toggle" (click)="toggleMenu()" [class.active]="isMenuOpen">
+      <span class="toggle-bar"></span>
+      <span class="toggle-bar"></span>
+      <span class="toggle-bar"></span>
+    </button>
   </div>
 </nav>
+
+<!-- Overlay for mobile menu -->
+<div class="menu-overlay" [class.active]="isMenuOpen" (click)="closeMenu()"></div>

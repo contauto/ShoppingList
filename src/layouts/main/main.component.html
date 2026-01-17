@@ -1,6 +1,16 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <router-outlet></router-outlet>
-    </div>
+<app-navbar></app-navbar>
+
+<main class="main-content">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="footer">
+  <div class="footer-content">
+    <span class="footer-text">
+      {{ 'footer.madeBy' | translate }}
+      <a href="https://berkemaktav.com" target="_blank" rel="noopener" class="footer-link">
+        berkemaktav.com
+      </a>
+    </span>
   </div>
+</footer>
